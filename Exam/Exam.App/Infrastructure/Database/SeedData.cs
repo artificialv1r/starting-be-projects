@@ -32,8 +32,43 @@ public static class SeedData
         await SeedUser(userManager, "nina", "nina.simone@example.com", "Nina", "Simone", "Ninas123!", "User");
         await SeedUser(userManager, "oscar", "oscar.wilde@example.com", "Oscar", "Wilde", "Oscar123!", "User");
 
+        // Seed Skills
+        await SeedSkills(context);
+
         // Seed Projects
         await SeedProjects(context, userManager);
+    }
+
+    private static async Task SeedSkills(AppDbContext context)
+    {
+        if (await context.Skills.AnyAsync()) return;
+
+        var skills = new List<Skill>
+        {
+            new Skill { Name = "Mobile App Development" },
+            new Skill { Name = "Web Design" },
+            new Skill { Name = "REST API Design" },
+            new Skill { Name = "Database Migration" },
+            new Skill { Name = "Real-Time Communication" },
+            new Skill { Name = "Authentication and Authorization" },
+            new Skill { Name = "Machine Learning" },
+            new Skill { Name = "Data Analytics" },
+            new Skill { Name = "CRM Integration" },
+            new Skill { Name = "Email Service Development" },
+            new Skill { Name = "E-Commerce" },
+            new Skill { Name = "UI Component Design" },
+            new Skill { Name = "IoT" },
+            new Skill { Name = "CI/CD" },
+            new Skill { Name = "Full-Text Search" },
+            new Skill { Name = "Payment Integration" },
+            new Skill { Name = "Push Notifications" },
+            new Skill { Name = "Blockchain" },
+            new Skill { Name = "Cloud Storage" },
+            new Skill { Name = "DevOps Monitoring" },
+        };
+
+        context.Skills.AddRange(skills);
+        await context.SaveChangesAsync();
     }
 
     private static async Task SeedProjects(AppDbContext context, UserManager<ApplicationUser> userManager)
