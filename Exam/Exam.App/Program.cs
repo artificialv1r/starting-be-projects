@@ -1,6 +1,8 @@
 using Exam.App;
 using Exam.App.Controllers.Middleware;
+using Exam.App.Domain.Repositories;
 using Exam.App.Infrastructure.Database;
+using Exam.App.Infrastructure.Database.Repositories;
 using Exam.App.Services;
 using Exam.App.Services.Mappers;
 using Microsoft.EntityFrameworkCore;
@@ -22,7 +24,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // Service and Repository Dependency Injection
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<Exam.App.Domain.Repositories.IUserRepository, Exam.App.Infrastructure.Database.Repositories.UserRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+builder.Services.AddScoped<IProjectService, ProjectService>();
 
 
 

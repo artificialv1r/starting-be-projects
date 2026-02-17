@@ -9,6 +9,7 @@ namespace Exam.App.Services.Mappers
         public MappingProfile()
         {
             CreateMap<ApplicationUser, ProfileDto>();
+            CreateMap<Project, ProjectDto>();
         }
     }
 }

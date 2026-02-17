@@ -7,11 +7,18 @@ namespace Exam.App.Infrastructure.Database;
 
 public class AppDbContext : IdentityDbContext<ApplicationUser>
 {
+    public DbSet<Project> Projects { get; set; }
+
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<Project>()
+            .HasOne<ApplicationUser>()
+            .WithMany()
+            .HasForeignKey(p => p.UserId);
 
         // Seed Roles
         modelBuilder.Entity<IdentityRole>().HasData(
