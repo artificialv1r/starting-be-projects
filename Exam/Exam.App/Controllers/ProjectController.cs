@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using Exam.App.Domain;
 using Exam.App.Services;
 using Exam.App.Services.Dtos;
 using Microsoft.AspNetCore.Authorization;
@@ -56,6 +57,13 @@ public class ProjectController : ControllerBase
     {
         var username = User.FindFirstValue(ClaimTypes.NameIdentifier);
         var result = await _projectService.GetOwnedAsync(username);
+        return Ok(result);
+    }
+
+    [HttpGet("users/{userId}/filtered")]
+    public async Task<IActionResult> GetFilteredByUser(string userId, [FromQuery] ProjectStatus status)
+    {
+        var result = await _projectService.GetFilteredByUserIdAsync(userId, status);
         return Ok(result);
     }
 }

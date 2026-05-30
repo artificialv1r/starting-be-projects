@@ -22,4 +22,13 @@ public class UserController : ControllerBase
         var result = await _userService.GetAllUsersAsync(page, pageSize);
         return Ok(result);
     }
+
+    [HttpGet("summary")]
+    public async Task<IActionResult> GetUsersWithProjectStats(
+        [FromQuery] int page = 1,
+        [FromQuery] int pageSize = 10)
+    {
+        var result = await _userService.GetUsersWithProjectStatsAsync(page, pageSize);
+        return Ok(result);
+    }
 }

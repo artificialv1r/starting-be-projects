@@ -1,3 +1,5 @@
+using Exam.App.Services.Dtos;
+
 namespace Exam.App.Domain.Repositories;
 
 public interface IProjectRepository
@@ -8,4 +10,6 @@ public interface IProjectRepository
     Task<List<Project>> GetOwnedByUserIdAsync(string userId);
     Task UpdateAsync(Project project);
     Task DeleteAsync(int id);
+    Task<List<Project>> GetFilteredByUserIdAsync(string userId, ProjectStatus status);
+    
 }

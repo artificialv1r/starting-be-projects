@@ -1,3 +1,4 @@
+using Exam.App.Domain;
 using Exam.App.Services.Dtos;
 
 namespace Exam.App.Services;
@@ -9,4 +10,5 @@ public interface IProjectService
     Task DeleteAsync(int id, string username);
     Task<List<ProjectDto>> GetByUserIdAsync(string userId);
     Task<List<ProjectDto>> GetOwnedAsync(string username);
+    Task<List<ProjectDto>> GetFilteredByUserIdAsync(string userId, ProjectStatus status);
 }

@@ -24,4 +24,18 @@ public class UserService : IUserService
 
         return new PaginatedListDto<ProfileDto>(profileDtos, paginatedUsers.Page, paginatedUsers.PageSize, paginatedUsers.TotalCount);
     }
+
+    public async Task<PaginatedListDto<UserProjectSummaryDto>> GetUsersWithProjectStatsAsync(int page, int pageSize)
+    {
+        var paginatedUsers = await _userRepository.GetUsersWithProjectStatsAsync(page, pageSize);
+
+        var dtos = _mapper.Map<List<UserProjectSummaryDto>>(paginatedUsers.Items);
+
+        return new PaginatedListDto<UserProjectSummaryDto>(
+            dtos,
+            paginatedUsers.Page,
+            paginatedUsers.PageSize,
+            paginatedUsers.TotalCount
+        );
+    }
 }

@@ -1,5 +1,6 @@
 using Exam.App.Domain;
 using Exam.App.Domain.Repositories;
+using Exam.App.Services.Dtos;
 using Microsoft.EntityFrameworkCore;
 
 namespace Exam.App.Infrastructure.Database.Repositories;
@@ -55,4 +56,14 @@ public class ProjectRepository : IProjectRepository
             await _context.SaveChangesAsync();
         }
     }
+
+    public async Task<List<Project>> GetFilteredByUserIdAsync(string userId, ProjectStatus status)
+    {
+        return await _context.Projects
+            .AsNoTracking()
+            .Where(p => p.UserId == userId && p.Status == status)
+            .ToListAsync();
+    }
+
+    
 }

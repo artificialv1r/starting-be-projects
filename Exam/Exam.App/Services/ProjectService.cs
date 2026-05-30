@@ -87,4 +87,10 @@ public class ProjectService : IProjectService
         var projects = await _projectRepository.GetOwnedByUserIdAsync(user.Id);
         return _mapper.Map<List<ProjectDto>>(projects);
     }
+
+    public async Task<List<ProjectDto>> GetFilteredByUserIdAsync(string userId, ProjectStatus status)
+    {
+        var projects = await _projectRepository.GetFilteredByUserIdAsync(userId, status);
+        return _mapper.Map<List<ProjectDto>>(projects);
+    }
 }
