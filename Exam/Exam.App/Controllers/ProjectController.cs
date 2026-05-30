@@ -12,10 +12,11 @@ namespace Exam.App.Controllers;
 public class ProjectController : ControllerBase
 {
     private readonly IProjectService _projectService;
-
-    public ProjectController(IProjectService projectService)
+    private readonly IUserService _userService;
+    public ProjectController(IProjectService projectService, IUserService userService)
     {
         _projectService = projectService;
+        _userService = userService;
     }
 
     [HttpPost]
@@ -29,14 +30,17 @@ public class ProjectController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id, [FromBody] ProjectDto dto)
     {
-        var result = await _projectService.UpdateAsync(id, dto);
+        var username = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        
+        var result = await _projectService.UpdateAsync(id, dto, username);
         return Ok(result);
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
-        await _projectService.DeleteAsync(id);
+        var username = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        await _projectService.DeleteAsync(id, username);
         return Ok();
     }
 

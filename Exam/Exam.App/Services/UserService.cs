@@ -1,6 +1,7 @@
 using AutoMapper;
 using Exam.App.Domain.Repositories;
 using Exam.App.Services.Dtos;
+using Exam.App.Services.Exceptions;
 
 namespace Exam.App.Services;
 

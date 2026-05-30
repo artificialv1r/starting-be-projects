@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Exam.App;
 using Exam.App.Controllers.Middleware;
 using Exam.App.Domain.Repositories;
@@ -18,8 +19,26 @@ builder.Services.AddTransient<ExceptionHandlingMiddleware>();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddControllers();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        policy =>
+        {
+            policy
+                .WithOrigins("http://localhost:5174")
+                .WithOrigins("http://localhost:5173")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddControllers()
+    .AddJsonOptions(o =>
+    {
+        o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()); //prikaz enuma kao string
+    });
 
 // Service and Repository Dependency Injection
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -27,9 +46,6 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
-
-
-
 
 var app = builder.Build();
 

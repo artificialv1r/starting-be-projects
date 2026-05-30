@@ -28,6 +28,14 @@ public class ProjectRepository : IProjectRepository
     public async Task<List<Project>> GetByUserIdAsync(string userId)
     {
         return await _context.Projects
+            .Where(p => p.UserId == userId && p.Status == ProjectStatus.Published || p.Status == ProjectStatus
+                .Completed)
+            .ToListAsync();
+    }
+
+    public async Task<List<Project>> GetOwnedByUserIdAsync(string userId)
+    {
+        return await _context.Projects
             .Where(p => p.UserId == userId)
             .ToListAsync();
     }

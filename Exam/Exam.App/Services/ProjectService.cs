@@ -36,21 +36,42 @@ public class ProjectService : IProjectService
         return _mapper.Map<ProjectDto>(created);
     }
 
-    public async Task<ProjectDto> UpdateAsync(int id, ProjectDto dto)
+    public async Task<ProjectDto> UpdateAsync(int id, ProjectDto dto, string username)
     {
+        var user = await _userManager.FindByNameAsync(username);
+        
         var project = await _projectRepository.GetByIdAsync(id);
         if (project == null)
             throw new NotFoundException(id);
 
+        if (project.UserId != user.Id)
+        {
+            throw new UnauthorizedAccessException();
+        }
+
         project.Name = dto.Name;
         project.Description = dto.Description;
-
+        project.StartedAt = dto.StartedAt;
+        project.CompletedAt = dto.CompletedAt;
+        project.Status = dto.Status;
+        
         await _projectRepository.UpdateAsync(project);
         return _mapper.Map<ProjectDto>(project);
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task DeleteAsync(int id, string username)
     {
+        var user = await _userManager.FindByNameAsync(username);
+        var project = await _projectRepository.GetByIdAsync(id);
+        if (project == null)
+        {
+            throw new NotFoundException(id);
+        }
+
+        if (project.UserId != user.Id)
+        {
+            throw new UnauthorizedAccessException();
+        }
         await _projectRepository.DeleteAsync(id);
     }
 
@@ -63,6 +84,7 @@ public class ProjectService : IProjectService
     public async Task<List<ProjectDto>> GetOwnedAsync(string username)
     {
         var user = await _userManager.FindByNameAsync(username);
-        return await GetByUserIdAsync(user.Id);
+        var projects = await _projectRepository.GetOwnedByUserIdAsync(user.Id);
+        return _mapper.Map<List<ProjectDto>>(projects);
     }
 }
