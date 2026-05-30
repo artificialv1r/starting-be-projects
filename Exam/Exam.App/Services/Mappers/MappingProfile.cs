@@ -10,6 +10,7 @@ namespace Exam.App.Services.Mappers
         {
             CreateMap<ApplicationUser, ProfileDto>();
             CreateMap<Project, ProjectDto>();
+            CreateMap<ProjectSkill, ProjectSkillDto>();
         }
     }
 }

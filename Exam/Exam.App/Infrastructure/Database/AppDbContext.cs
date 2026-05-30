@@ -9,6 +9,7 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
 {
     public DbSet<Project> Projects { get; set; }
     public DbSet<Skill> Skills { get; set; }
+    public DbSet<ProjectSkill> ProjectSkills { get; set; }
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
@@ -20,6 +21,18 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
             .HasOne<ApplicationUser>()
             .WithMany()
             .HasForeignKey(p => p.UserId);
+
+        modelBuilder.Entity<ProjectSkill>()
+            .HasOne(ps => ps.Skill)
+            .WithMany(s => s.ProjectSkills)
+            .HasForeignKey(ps => ps.SkillId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<ProjectSkill>()
+            .HasOne(ps => ps.Project)
+            .WithMany(p => p.ProjectSkills)
+            .HasForeignKey(ps => ps.ProjectId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         // Seed Roles
         modelBuilder.Entity<IdentityRole>().HasData(

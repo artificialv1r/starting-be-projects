@@ -9,4 +9,15 @@ public class Project
     public DateTime? CompletedAt { get; set; }
     public ProjectStatus Status { get; set; }
     public string UserId { get; set; }
+    public List<ProjectSkill> ProjectSkills { get; set; } = [];
+
+    public bool CanAddSkill()
+    {
+        if (Status == ProjectStatus.Draft || Status == ProjectStatus.Published)
+        {
+            return true;
+        }
+
+        return false;
+    }
 }
